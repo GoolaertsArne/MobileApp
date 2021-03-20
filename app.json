@@ -1,0 +1,12 @@
+{
+  "name": "iWasThere-app",
+  "displayName": "iWasThere-app",
+  "expo": {
+    "name": "iWasThere-app",
+    "slug": "iWasThere-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
