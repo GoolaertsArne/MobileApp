@@ -3,23 +3,29 @@ import { StyleSheet, Dimensions, View, Button, Text } from "react-native";
 import SignaturePad from "react-native-signature-pad";
 //import { StackNavigator } from 'react-navigation';
 import { TabRouter } from "@react-navigation/routers";
+// import Resemble from "resemblejs";
+import Location from './Location';
 
 
 class SignUser extends React.Component {
+ 
   constructor(props) {
     super(props);
-    this.state = { 
-      signaturePad: null, 
-      signaturePadKey: 0, 
+    this.state = {
+      signaturePad: null,
+      signaturePadKey: 0,
       image: "",
-      lastName : this.props.route.params.item.lastName,
-      studentNr:  this.props.route.params.item.studentNr,
-      firstName:  this.props.route.params.item.firstName,
-     };
+      lastName: this.props.route.params.item.lastName,
+      studentNr: this.props.route.params.item.studentNr,
+      firstName: this.props.route.params.item.firstName,
+      location: new Location,
+      date: "",
+    };
   }
-  
+  //var is_masterSignature;
 
-  componentDidMount() {}
+
+  componentDidMount() { }
 
   state = {
     signaturePadKey: 0,
@@ -42,6 +48,8 @@ class SignUser extends React.Component {
     console.log(this.state.image);
     this.setState({ signaturePadKey: this.state.signaturePadKey + 1 });
     this.props.navigation.navigate('StudentList')
+    this.cleanButtonAction;
+
     //navigate to list or details
   };
   createSignaturePad = () => {
@@ -54,10 +62,17 @@ class SignUser extends React.Component {
     return this.signaturePad;
   };
 
+  // signatureVericication() {
+  //   resemble.outputSettings({ useCrossOrigin: false });
+  //   var diff = resemble("data:image/jpeg;base64,/9j/4AAQSkZJRgAB...").compareTo(
+  //     "data:image/jpeg;base64,/9j/,/9j/4AAQSkZJRg..."
+  //   );
+  // }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Text style = {styles.head }> {this.state.studentNr} - {this.state.lastName} - {this.state.firstName}  </Text>
+        <Text style={styles.head}> {this.state.studentNr} - {this.state.lastName} - {this.state.firstName}  </Text>
         {this.createSignaturePad()}
         <Button title="clear" onPress={this.cleanButtonAction}></Button>
         <Button title="save" onPress={this.saveButtonAction}></Button>
@@ -69,6 +84,8 @@ export default SignUser;
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  head: { height: 40, fontSize: 30, marginBottom: 10,  textAlign: 'center',
-  alignItems: 'center', }
+  head: {
+    height: 40, fontSize: 30, marginBottom: 10, textAlign: 'center',
+    alignItems: 'center',
+  }
 });

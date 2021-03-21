@@ -37,7 +37,7 @@ export default class StudentList extends Component {
 
 
   getStudents() {
-    this.db.getAllUsers(["firstName", "lastName", "studentNr"])
+    this.db.getAllUsers(["firstName", "lastName", "studentNr"],"students")
       .then(response => {
         this.setState({ students: response._array })
         //console.log(this.state.students)

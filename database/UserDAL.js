@@ -2,12 +2,12 @@ import * as SQLite from "expo-sqlite";
 
 export class UserDAL {
   createDB() {
-    const db = SQLite.openDatabase("IWT", 1);
+    const db = SQLite.openDatabase("sqliteD", 1);
     return new Promise((resolve) => {
       db.transaction(
         (tx) =>
           tx.executeSql(
-            this._createQueryBuilder(),
+            this._CreateStudentTableQueryBuilder(),
             [],
             (txr, res) => console.log(res),
             (err) => resolve(err)
@@ -18,8 +18,28 @@ export class UserDAL {
     });
   }
 
+  createSignaturesTable() {
+    const db = SQLite.openDatabase("sqliteD", 1);
+    return new Promise((resolve) => {
+      db.transaction(
+        (tx) =>
+          tx.executeSql(
+            this._CreateSignaturesTableQueryBuilder(),
+            [],
+            (txr, res) => console.log(res),
+            (err) => resolve(err)
+          ),
+        (err) => console.log("err"),
+        (success) => console.log("successfull created signature table")
+      );
+    });
+  }
+
+
+
+
   insertStudents(student) {
-    const db = SQLite.openDatabase("IWT", 1);
+    const db = SQLite.openDatabase("sqliteD", 1);
     console.log(this._insertStudentsQueryBuilder(student));
     return new Promise((resolve) => {
       db.transaction(
@@ -36,37 +56,87 @@ export class UserDAL {
     });
   }
 
-  insertSignature() {
-    //Nog aan te vullen, om siganture toe te voegen nadat deze gesaved wordt. 
-
-  }
 
 
-
-  insertTest() {
-    const db = SQLite.openDatabase("IWT", 1);
-    var query =
-      "INSERT INTO students (studentNr, firstName, lastName) VALUES ('test', 'test', 'test')";
+  insertSignatureTest() {
+    const db = SQLite.openDatabase("sqliteD", 1);
+    var query = "INSERT INTO signatures (studentNr, date, signatureBase64, location, is_masterSignature) VALUES ('test', 'test', 'test', 'test', 0);";
     db.transaction(
       (tx) =>
         tx.executeSql(
           query,
           [],
-          (txr, res) => console.log(res),
-          (err) => console.log(err)
-        ),
-      (err) => console.log("err"),
-      (success) => console.log("successfull inserted data in students")
+          (txr, res) => console.log("succes", res),
+          (txr, err) => console.log("error", err)
+        )
+      // ,(err) => console.log("err"),
+      // (success) => console.log("successfull inserted data in signatures")
     );
   }
 
-  getAllUsers(cols) {
-    const db = SQLite.openDatabase("IWT", 1);
+  insertSignature(signature) {
+    const db = SQLite.openDatabase("sqliteD", 1);
+    console.log(this._insertSignaturesQueryBuilder(signature));
     return new Promise((resolve) => {
       db.transaction(
         (tx) =>
           tx.executeSql(
-            this._selectQueryBuilder(cols, null, null),
+            this._insertStudentsQueryBuilder(signature),
+            [],
+            (txr, res) => console.log(res),
+            (err) => resolve(false)
+          ),
+        (err) => resolve(false),
+        (success) => resolve(true)
+      );
+    });
+  }
+
+
+
+
+  insertTest() {
+    const db = SQLite.openDatabase("sqliteD", 1);
+    var query =
+      "INSERT INTO students (studentNr, firstName, lastName) VALUES ('test', 'test', 'test');";
+    db.transaction(
+      (tx) =>
+        tx.executeSql(
+          query,
+          [],
+          (txr, res) => console.log("succes", res),
+          (txr, err) => console.log("error", err)
+        ),
+    );
+  }
+
+
+  getSignatures(cols) {
+    const db = SQLite.openDatabase("sqliteD", 1);
+    return new Promise((resolve) => {
+      db.transaction(
+        (tx) =>
+          tx.executeSql(
+            this._selectQueryBuilder(cols, "signatures", null, null),
+            [],
+            (txr, res) => resolve(res.rows),
+            (err) => console.log(err)
+          ),
+        (err) => console.log("err"),
+        (success) => console.log("success")
+      );
+    });
+
+  }
+
+
+  getAllUsers(cols) {
+    const db = SQLite.openDatabase("sqliteD", 1);
+    return new Promise((resolve) => {
+      db.transaction(
+        (tx) =>
+          tx.executeSql(
+            this._selectQueryBuilder(cols, "students", null, null),
             [],
             (txr, res) => resolve(res.rows),
             (err) => console.log(err)
@@ -78,12 +148,12 @@ export class UserDAL {
   }
 
   searchStudent(lastName) {
-    const db = SQLite.openDatabase("IWT", 1);
+    const db = SQLite.openDatabase("sqliteD", 1);
     return new Promise((resolve) => {
       db.transaction(
         (tx) =>
           tx.executeSql(
-            this._selectQueryBuilder(null, lastName, null),
+            this._selectQueryBuilder(null, "students", lastName, null),
             [],
             (txr, res) => resolve(res.rows),
             (err) => console.log(err)
@@ -96,7 +166,7 @@ export class UserDAL {
 
 
 
-  _selectQueryBuilder(cols, lastName, sortOption) {
+  _selectQueryBuilder(cols, table, lastName, sortOption) {
     var query = "SELECT ";
     if (cols) {
       cols.forEach((col) => {
@@ -106,7 +176,7 @@ export class UserDAL {
     } else {
       query += ` *`;
     }
-    query += ` FROM students `;
+    query += ` FROM ${table} `;
     if (lastName) {
       query += ` WHERE lastName LIKE %${lastName}% `;
     }
@@ -119,11 +189,14 @@ export class UserDAL {
 
   }
 
+
+
   _insertStudentsQueryBuilder(student) {
     console.log(student);
     var query = "INSERT ";
     query += `INTO students (studentNr, firstName, lastName) VALUES
     ('${student.studentNr}', '${student.firstName}', '${student.lastName}');`;
+    console.log(query);
     return query;
   }
 
@@ -133,21 +206,34 @@ export class UserDAL {
     console.log(signature);
     var query = "INSERT ";
     query += `INTO signatures (studentNr, date, signatureBase64, location) VALUES
-    ('${signature.studentNr}', '${signature.date}', '${signature.signatureBase64, signature.location}');`;
+    ('${signature.studentNr}', '${signature.date}', '${signature.signatureBase64}, '${signature.location}');`;
+    console.log(query);
     return query;
   }
 
 
 
   //LOCATION NEEDS TO BE ADDED IN SIGNATURE TABLE. 
-  _createQueryBuilder() {
+  _CreateStudentTableQueryBuilder() {
     var query =
       "CREATE TABLE students ( studentNr VARCHAR(7) PRIMARY KEY ,  firstName TEXT NOT NULL, lastName TEXT NOT NULL);";
-    query += "CREATE TABLE signatures ( signature_id INT NOT NULL AUTO_INCREMENT, studentNr VARCHAR(7),  date TEXT NOT NULL, signatureBase64 VARCHAR(255) NULL UNIQUE, location VARCHAR(100) left NULL, right NULL, top NULL, bottom NULL, total NULL,  FOREIGN KEY(studentNr) REFERENCES students (studentNr));"
+    console.log(query);
+    return query;
+  }
+
+
+  _CreateSignaturesTableQueryBuilder() {
+    var query = "CREATE TABLE signatures ( signature_id  INTEGER PRIMARY KEY AUTOINCREMENT , studentNr VARCHAR(7),  date TEXT NOT NULL, signatureBase64 TEXT NULL, location VARCHAR(100), is_masterSignature INTEGER NOT NULL default 0, FOREIGN KEY(studentNr) REFERENCES students (studentNr));"
     // create table validationData ( validationKey int auto_increment primary key, left, right, top, bottom, total)
+    console.log(query);
     return query;
   }
 }
 
 
 
+
+
+
+
+//date function --> SELECT date('now');

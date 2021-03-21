@@ -11,6 +11,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AddUser from "./screens/components/AddUser";
 import StudentList from "./screens/components/StudentList";
 import AdminLogin from './screens/components/AdminLogin';
+import Location from '../iWasThere/screens/components/Location';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,17 +27,20 @@ class App extends React.Component {
       result: undefined,
       db: new UserDAL()
     };
-    try {
-      this.state.db.createDB();
-    } catch {
-    }
+    // try {
+    //   this.state.db.createDB();
+    //   this.state.db.createSignaturesTable();
+    // } catch {
+    // }
   }
   async componentDidMount() {
-    //gaat niet in de if statement, dus insert geen data. voor wat staat de dbMounted?
-    this.state.db.insertTest();
+    // this.state.db.insertSignatureTest();
+    // this.state.db.insertTest();
     // this.state.db.getAllUsers(["firstName"]).then(res => console.log(res));
+    // this.state.db.getSignatures(["studentNr", "date", "signatureBase64", "location"]).then(data => console.log(data));
+    
 
-    // do this one at a time (first insert then getAllUsers)
+  
     //this.state.db.getAllUsers(["firstName", "lastName", "studentNr"]).then(data => console.log(data));
     //this.state.db.searchStudent("test").then(data => console.log(data));
 
@@ -114,6 +118,10 @@ class App extends React.Component {
           <Tab.Screen
             name='SignUser'
             component={SignUser}
+          />
+             <Tab.Screen
+            name='Location'
+            component={Location}
           />
         </Tab.Navigator>
       </NavigationContainer>

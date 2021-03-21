@@ -25,7 +25,7 @@ export default class AdminLogin extends Component{
  render() {
   return (
     <View style={styles.container}>
-      {/* <Image style={styles.image} source={require("../../assets/background.png")} /> */}
+      {/* <Image style={styles.image} source={require('../../assets/background.png')} /> */}
  
       <StatusBar style="auto" />
       <View style={styles.inputView}>
