@@ -76,19 +76,19 @@ export class UserDAL {
 
   insertSignature(signature) {
     const db = SQLite.openDatabase("sqliteD", 1);
-    console.log(this._insertSignaturesQueryBuilder(signature));
     return new Promise((resolve) => {
-      db.transaction(
-        (tx) =>
-          tx.executeSql(
-            this._insertStudentsQueryBuilder(signature),
-            [],
-            (txr, res) => console.log(res),
-            (err) => resolve(false)
-          ),
-        (err) => resolve(false),
-        (success) => resolve(true)
-      );
+    db.transaction(
+      (tx) =>
+        tx.executeSql(
+          this._insertSignaturesQueryBuilder(signature),
+          //console.log(this._insertSignaturesQueryBuilder),
+          [],
+          (txr, res) => console.log(res),
+          (err) => resolve(err)
+        ),
+      (err) => resolve(false),
+      (success) => resolve(true)
+        );
     });
   }
 
@@ -178,7 +178,7 @@ export class UserDAL {
     }
     query += ` FROM ${table} `;
     if (lastName) {
-      query += ` WHERE lastName LIKE %${lastName}% `;
+      query += ` WHERE lastName LIKE '%${lastName}%' `;
     }
     if (sortOption) {
       query += ` ORDER BY ${sortOption.col} ${sortOption.desc === true ? "DESC" : "ASC"
@@ -196,17 +196,16 @@ export class UserDAL {
     var query = "INSERT ";
     query += `INTO students (studentNr, firstName, lastName) VALUES
     ('${student.studentNr}', '${student.firstName}', '${student.lastName}');`;
-    console.log(query);
     return query;
   }
 
 
   //NOT YET TESTED 
   _insertSignaturesQueryBuilder(signature) {
-    console.log(signature);
+    //console.log(signature);
     var query = "INSERT ";
-    query += `INTO signatures (studentNr, date, signatureBase64, location) VALUES
-    ('${signature.studentNr}', '${signature.date}', '${signature.signatureBase64}, '${signature.location}');`;
+    query += `INTO signatures (studentNr, date, signatureBase64, location, is_masterSignature) VALUES
+    ('${signature[0]}', ${signature[1]}, '${signature[2]}', '${signature[3]}', '${signature[4]}');`;
     console.log(query);
     return query;
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';   
 import { StyleSheet,TouchableOpacity, Text, TextInput, View, SafeAreaView,Alert } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+// import Geolocation from 'react-native-geolocation-service'
 import axios from 'axios';
 
 class Location extends Component {
@@ -14,10 +15,12 @@ class Location extends Component {
 
     componentDidMount(){
         let geoOptions = {
-            enableHighAccuracy: true,
-            timeout:20000,
-            maximumAge: 60*60*24
+            enableHighAccuracy:true,
+            maximumAge:20000, 
+            timeout:60000
         }
+           
+        
 
         //state is false to launch the next screen
         this.setState({readyToLaunch:false});
@@ -29,11 +32,13 @@ class Location extends Component {
 
     //Geolocation success callback method
     geoLocationSuccess = (position) => {
+        console.log("test");
         const response = position.coords;
         const latitude = response.latitude;
         const longitude = response.longitude;
         console.log('Lat & Lng', latitude, longitude);
         this.setState({ latitude, longitude, readyToLaunch:true });
+        console.log(latitude, longitude)
 
         //console.log(latitude, longitude)
         //gets data frop OSM API
@@ -53,6 +58,7 @@ class Location extends Component {
 
     //Geolocation failure callback method
     geoLocationFailure = (err) => {
+        console.log(err)
         this.setState({ readyToLaunch: false, errorMsg: 'Geo Location failure, permission denied, Please enable it.' });
         Alert.alert('Error', this.state.errorMsg)
     }

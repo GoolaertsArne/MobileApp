@@ -35,9 +35,10 @@ class App extends React.Component {
   }
   async componentDidMount() {
     // this.state.db.insertSignatureTest();
+    //this.state.db.getSignatures().then(res=> console.log(res));
     // this.state.db.insertTest();
     // this.state.db.getAllUsers(["firstName"]).then(res => console.log(res));
-    // this.state.db.getSignatures(["studentNr", "date", "signatureBase64", "location"]).then(data => console.log(data));
+    this.state.db.getSignatures(["signature_id","studentNr", "date", "signatureBase64", "location"]).then(data => console.log(data));
     
 
   
@@ -103,6 +104,10 @@ class App extends React.Component {
               fontSize: 20
             }
           }}>
+                 {/* <Tab.Screen
+            name='Location'
+            component={Location}
+          /> */}
                <Tab.Screen
             name='AdminLogin'
             component={AdminLogin}
@@ -119,10 +124,7 @@ class App extends React.Component {
             name='SignUser'
             component={SignUser}
           />
-             <Tab.Screen
-            name='Location'
-            component={Location}
-          />
+        
         </Tab.Navigator>
       </NavigationContainer>
     );
