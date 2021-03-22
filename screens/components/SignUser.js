@@ -6,6 +6,8 @@ import { TabRouter } from "@react-navigation/routers";
 // import Resemble from "resemblejs";
 import Location from './Location';
 import { UserDAL } from '../../database/UserDAL';
+import Geolocation from '@react-native-community/geolocation';
+import axios from 'axios';
 
 
 class SignUser extends React.Component {
@@ -22,12 +24,32 @@ class SignUser extends React.Component {
       location: "Antwerpen",
       date: "datetime('now')",
       is_master: 0,
+      latitude:'',
+      longitude:'',
+      errorMsg:'Unable to read location, please try again later!',
+      readyToLaunch:false,
+      addressData:[]
     };
   }
+
+
+
   //var is_masterSignature;
 
 
-  componentDidMount() { }
+  componentDidMount() { 
+    let geoOptions = {
+      enableHighAccuracy:true,
+      maximumAge:20000, 
+      timeout:60000
+    }
+    this.setState({readyToLaunch:false});
+    //Asynchronous Pattern to read location
+    Geolocation.getCurrentPosition(this.geoLocationSuccess,this.geoLocationFailure,geoOptions);
+
+  }
+
+
 
   state = {
     signaturePadKey: 0,
@@ -50,9 +72,10 @@ class SignUser extends React.Component {
 
 
 saveButtonAction = () => {
+  //console.log(this.state.addressData.display_name);
   this.setState({ signaturePadKey: this.state.signaturePadKey + 1 });
-  this.db.insertSignature([this.state.studentNr, this.state.date, this.state.image, this.state.location, this.state.is_master]).then((res) => {
-    console.log((res));
+  this.db.insertSignature([this.state.studentNr, this.state.date, this.state.image, this.state.addressData.display_name, this.state.is_master]).then((res) => {
+    //console.log((res));
     if (!res) alert("An error occured!");
     else this.props.navigation.navigate('StudentList')
     
@@ -73,6 +96,42 @@ createSignaturePad = () => {
   });
   return this.signaturePad;
 };
+
+
+
+
+geoLocationSuccess = (position) => {
+  console.log("test");
+  const response = position.coords;
+  const latitude = response.latitude;
+  const longitude = response.longitude;
+  console.log('Lat & Lng', latitude, longitude);
+  this.setState({ latitude, longitude, readyToLaunch:true });
+  console.log(latitude, longitude)
+
+  //console.log(latitude, longitude)
+  //gets data frop OSM API
+  let url = 'http://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + latitude + '&lon=' + longitude;
+  axios.get(url)
+      .then(response =>{
+          console.log('getting data from axios', response.data)
+          this.setState({
+              addressData: response.data
+          })
+          //console.log(this.state.latitude)
+      })
+      .catch(function (error) {
+          console.log(error)
+      })
+}
+
+
+  //Geolocation failure callback method
+  geoLocationFailure = (err) => {
+    console.log(err)
+    this.setState({ readyToLaunch: false, errorMsg: 'Geo Location failure, permission denied, Please enable it.' });
+    Alert.alert('Error', this.state.errorMsg)
+}
 
 // signatureVericication() {
 //   resemble.outputSettings({ useCrossOrigin: false });

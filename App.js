@@ -12,6 +12,7 @@ import AddUser from "./screens/components/AddUser";
 import StudentList from "./screens/components/StudentList";
 import AdminLogin from './screens/components/AdminLogin';
 import Location from '../iWasThere/screens/components/Location';
+//navigator.geolocation = require('@react-native-community/geolocation');
 
 const Tab = createBottomTabNavigator();
 
@@ -27,11 +28,11 @@ class App extends React.Component {
       result: undefined,
       db: new UserDAL()
     };
-    // try {
-    //   this.state.db.createDB();
-    //   this.state.db.createSignaturesTable();
-    // } catch {
-    // }
+    try {
+      this.state.db.createDB();
+      this.state.db.createSignaturesTable();
+    } catch {
+    }
   }
   async componentDidMount() {
     // this.state.db.insertSignatureTest();
@@ -104,10 +105,6 @@ class App extends React.Component {
               fontSize: 20
             }
           }}>
-                 {/* <Tab.Screen
-            name='Location'
-            component={Location}
-          /> */}
                <Tab.Screen
             name='AdminLogin'
             component={AdminLogin}

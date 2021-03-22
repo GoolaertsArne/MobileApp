@@ -26,4 +26,6 @@ target 'iWasThereapp' do
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
+  pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
+
 end
