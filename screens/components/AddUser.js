@@ -83,7 +83,7 @@ class AddUser extends React.Component {
       if (!res) alert("An error occured!");
       // navigate to list
       else {
-        this.props.navigation.navigate("StudentList");
+        this.props.navigation.navigate('Home', { screen: 'StudentList' });
       }
     });
   }

@@ -1,20 +1,25 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, Button } from "react-native";
-import { mapping, light } from "@eva-design/eva";
 import SignUser from "./screens/components/SignUser";
 import * as SQLite from "expo-sqlite";
 import { UserDAL } from "./database/UserDAL";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import * as React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AddUser from "./screens/components/AddUser";
 import StudentList from "./screens/components/StudentList";
 import AdminLogin from './screens/components/AdminLogin';
-import Location from '../iWasThere/screens/components/Location';
+import { createStackNavigator } from '@react-navigation/stack';
+// import Location from '../iWasThere/screens/components/Location';
+// import { SignedIn, SignedOut } from "./screens/navigation/routes";
+// import { isSignedIn } from './screens/authentication/auth';
+// import {createRootNavigator} from './screens/navigation/routes';
+// import  Container  from './screens/navigation/routes';
 //navigator.geolocation = require('@react-native-community/geolocation');
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 class App extends React.Component {
   constructor(props) {
@@ -26,84 +31,81 @@ class App extends React.Component {
       lat: undefined,
       lng: undefined,
       result: undefined,
+      signedIn: false,
+      checkedSignIn: false,
       db: new UserDAL()
     };
-    try {
-      this.state.db.createDB();
-      this.state.db.createSignaturesTable();
-    } catch {
-    }
+    // try {
+    //   this.state.db.createDB();
+    //   this.state.db.createSignaturesTable();
+    // } catch {
+    // }
   }
   async componentDidMount() {
+    // isSignedIn()
+    // .then((res) => this.setState({ signedIn: res, checkedSignIn: true }))
+    // .catch((err) => console.log(err));
     // this.state.db.insertSignatureTest();
     //this.state.db.getSignatures().then(res=> console.log(res));
     // this.state.db.insertTest();
     // this.state.db.getAllUsers(["firstName"]).then(res => console.log(res));
-    this.state.db.getSignatures(["signature_id","studentNr", "date", "signatureBase64", "location"]).then(data => console.log(data));
-    
-
-  
+    //this.state.db.getSignatures(["signature_id","studentNr", "date", "signatureBase64", "location"]).then(data => console.log(data));
     //this.state.db.getAllUsers(["firstName", "lastName", "studentNr"]).then(data => console.log(data));
     //this.state.db.searchStudent("test").then(data => console.log(data));
 
     
   }
-  renderItem() {
-    // return (
-    //   <Text>{this.state.users[0]?.firstName}</Text>
-    // );
+
+   Tabs() {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={StudentList} />
+      </Tab.Navigator>
+    );
   }
 
-  watchID = null;
+   AppTabs() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="AdminLogin" component={AdminLogin} />
+        <Stack.Screen name="SignUser" component={SignUser} />
+        <Stack.Screen name="AddUser" component={AddUser} />
+        <Stack.Screen name="Home" component={this.Tabs} />
+      </Stack.Navigator>
+    );
+  }
 
-  // componentDidMount() {
-  //   const urlBase =
-  //     "http://nominatim.openstreetmap.org/reverse?format=json&lat=";
-  //   const urlMiddle = "&lon=";
-  //   const urlEnd = "&zoom=18&addressdetails=1";
-  //   RNLocation.requestPermission({
-  //     ios: 'always', // or 'always'
-  //     android: {
-  //       detail: 'coarse', // or 'fine'
-  //       rationale: {
-  //         title: "We need to access your location",
-  //         message: "We use your location to show where you are on the map",
-  //         buttonPositive: "OK",
-  //         buttonNegative: "Cancel"
-  //       }
-  //     }
-  //   }).then( granted => {
-  //     if(granted) {
-  //       RNLocation.configure({ distanceFilter: 0 });
-  //       RNLocation.getLatestLocation({ timeout: 1000 }).then( (data) => {
-  //         console.log("data")
-  //         this.setState({
-  //           lat: data.latitude,
-  //           lng: data.longitude,
-  //         });
-  //         // fetch(
-  //         //   urlBase + this.state.lat + urlMiddle + this.state.lng + urlEnd
-  //         // ).then((loc) => {
-  //         //   this.setState({
-  //         //     location: JSON.stringify(loc),
-  //         //   });
-  //         // });
-  //         console.log(this.state);
-  //       });
-  //     }
-  //   });
+  render() {
+    //const { checkedSignIn, signedIn } = this.state;
+
+    // If we haven't checked AsyncStorage yet, don't render anything (better ways to do this)
+  //   if (!checkedSignIn) {
+  //     return null;
+  //   }
+
+  //   if(SignedIn){
+  //     return <SignedIn/>
+  //   }
+  //   return <SignedOut/>
+  //   // const Layout = createRootNavigator(signedIn);
+  //   // return <Layout />;
 
   // }
-  render() {
-    return (
+
+
+
+      return(
       <NavigationContainer>
-        <Tab.Navigator
+        {this.AppTabs()}
+        {/* <Tab.Navigator
           tabBarOptions={{
+            tabBarVisible: false,
             activeTintColor: 'blue',
             inactiveTintColor: 'gray',
             labelStyle: {
               fontSize: 20
             }
+           
           }}>
                <Tab.Screen
             name='AdminLogin'
@@ -122,10 +124,10 @@ class App extends React.Component {
             component={SignUser}
           />
         
-        </Tab.Navigator>
+        </Tab.Navigator> */}
       </NavigationContainer>
-    );
-  }
+      )}
+
 }
 //AdminLogin
 

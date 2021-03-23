@@ -10,6 +10,7 @@ export default class StudentList extends Component {
     this.state = {
       lastName: "",
       students: [],
+      dummy : ""
       //search: '',
       // tableData: this.db.getAllUsers(["firstName", "lastName", "studentNr"]).then(data => console.log(data)),
     }
@@ -21,8 +22,6 @@ export default class StudentList extends Component {
   async componentDidMount() {
     this.getStudents();
   }
-
-
 
 
   // updateSearch = (search) => {

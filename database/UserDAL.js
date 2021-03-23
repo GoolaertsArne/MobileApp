@@ -80,7 +80,12 @@ export class UserDAL {
     db.transaction(
       (tx) =>
         tx.executeSql(
-          this._insertSignaturesQueryBuilder(signature),
+          //if (selectsignatures([studentNr, is_master] === null) {
+          //   this._insertMasterSignaturesQueryBuilder(signature)
+          // }
+          // else this._insertSignaturesQueryBuilder(signature),
+          this._insertSignaturesQueryBuilder(signature)
+          ,
           //console.log(this._insertSignaturesQueryBuilder),
           [],
           (txr, res) => console.log(res),
@@ -205,9 +210,16 @@ export class UserDAL {
     //console.log(signature);
     var query = "INSERT ";
     query += `INTO signatures (studentNr, date, signatureBase64, location, is_masterSignature) VALUES
-    ('${signature[0]}', ${signature[1]}, '${signature[2]}', '${signature[3]}', '${signature[4]}');`;
+    ('${signature[0]}', ${signature[1]}, '${signature[2]}', '${signature[3]}', 0);`;
     console.log(query);
     return query;
+  }
+
+
+  _insertMasterSignaturesQueryBuilder(signature){
+    var query = "INSERT ";
+    query += `INTO signatures (studentNr, date, signatureBase64, location, is_masterSignature) VALUES
+    ('${signature[0]}', ${signature[1]}, '${signature[2]}', '${signature[3]}', 1);`;
   }
 
 

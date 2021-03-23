@@ -10,10 +10,12 @@
   "dependencies": {
     "@eva-design/eva": "^2.0.0",
     "@expo/metro-config": "^0.1.56",
+    "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/native": "^5.9.3",
+    "@react-navigation/stack": "^5.14.3",
     "axios": "^0.21.1",
     "expo": "~40.0.0",
     "expo-asset": "~8.2.1",
@@ -39,6 +41,8 @@
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "^0.15.0",
     "react-native-webview": "11.0.0",
+    "react-navigation": "^4.4.4",
+    "react-navigation-tabs": "^2.11.0",
     "squel": "^5.13.0"
   },
   "devDependencies": {

@@ -23,7 +23,7 @@ class SignUser extends React.Component {
       firstName: this.props.route.params.item.firstName,
       location: "Antwerpen",
       date: "datetime('now')",
-      is_master: 0,
+      //is_master: 0,
       latitude:'',
       longitude:'',
       errorMsg:'Unable to read location, please try again later!',
@@ -74,10 +74,10 @@ class SignUser extends React.Component {
 saveButtonAction = () => {
   //console.log(this.state.addressData.display_name);
   this.setState({ signaturePadKey: this.state.signaturePadKey + 1 });
-  this.db.insertSignature([this.state.studentNr, this.state.date, this.state.image, this.state.addressData.display_name, this.state.is_master]).then((res) => {
+  this.db.insertSignature([this.state.studentNr, this.state.date, this.state.image, this.state.addressData.display_name]).then((res) => {
     //console.log((res));
     if (!res) alert("An error occured!");
-    else this.props.navigation.navigate('StudentList')
+    else this.props.navigation.navigate('Home', { screen: 'StudentList' })
     
   });
 }
@@ -101,20 +101,17 @@ createSignaturePad = () => {
 
 
 geoLocationSuccess = (position) => {
-  console.log("test");
   const response = position.coords;
   const latitude = response.latitude;
   const longitude = response.longitude;
-  console.log('Lat & Lng', latitude, longitude);
   this.setState({ latitude, longitude, readyToLaunch:true });
-  console.log(latitude, longitude)
 
   //console.log(latitude, longitude)
   //gets data frop OSM API
   let url = 'http://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + latitude + '&lon=' + longitude;
   axios.get(url)
       .then(response =>{
-          console.log('getting data from axios', response.data)
+          //console.log('getting data from axios', response.data)
           this.setState({
               addressData: response.data
           })

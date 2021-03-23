@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useState } from "react";
+import React, { Component, useState, Alert } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,12 +16,40 @@ export default class AdminLogin extends Component{
     //this.db.insertStudents = this.db.insertStudents.bind(this);
     this.state = {
       email: "",
-      setEmail: "",
       password: "",
-      setPassword : "",
+      adminPassword: "test",
+      adminEmail : "test",
+      errorMsg: "invalid login"
+
     };
     //this.db.insertStudents = this.db.insertStudents.bind(this)
   }
+
+  validateLogin(email, password) {
+    console.log(email, password);
+    if (email == this.state.adminEmail && password == this.state.adminPassword) {
+      this.state.isValid = true;
+      this.props.navigation.navigate('Home', { screen: 'StudentList' })
+    }
+    else {
+      this.isValid = false;
+      alert(this.state.errorMsg);
+    }
+  }
+
+
+  changeEmail(email) {
+    this.setState({ email: email });
+  }
+
+  changePassword(password) {
+    this.setState({ password: password });
+  }
+
+
+
+
+
  render() {
   return (
     <View style={styles.container}>
@@ -33,7 +61,8 @@ export default class AdminLogin extends Component{
           style={styles.TextInput}
           placeholder="Email"
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(email) => this.changeEmail(email)}
+          value={this.state.email}
         />
       </View>
  
@@ -43,7 +72,8 @@ export default class AdminLogin extends Component{
           placeholder="Password"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(password) => this.changePassword(password)}
+          value={this.state.password}
         />
       </View>
  
@@ -51,7 +81,10 @@ export default class AdminLogin extends Component{
         <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity> */}
  
-      <TouchableOpacity style={styles.loginBtn}>
+      <TouchableOpacity style={styles.loginBtn}
+       onPress={() => this.validateLogin(this.state.email, this.state.password)}
+        // onSignIn().then(() => navigation.navigate('SignedIn'))
+       >
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
     </View>
