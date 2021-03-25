@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert, FlatList, ScrollView, TextInput, Keyboard } from 'react-native';
-import {UserDAL} from "../../database/UserDAL";
+import {UserDAL} from "../database/UserDAL";
 //import { SearchBar } from 'react-native-elements';
 
-export default class StudentList extends Component {
+export default class HomePageStudents extends Component {
   db = new UserDAL();
   constructor(props) {
     super(props);
     this.state = {
       lastName: "",
       students: [],
-      dummy : ""
+      dummy : "",
+      refresh : "",
       //search: '',
       // tableData: this.db.getAllUsers(["firstName", "lastName", "studentNr"]).then(data => console.log(data)),
     }
@@ -19,14 +20,15 @@ export default class StudentList extends Component {
     this.searchStudent = this.searchStudent.bind(this);
   }
 
-  async componentDidMount() {
+   componentDidMount() {
     this.getStudents();
   }
 
-
-  // updateSearch = (search) => {
-  //   this.setState({ search });
+  // refresh = () => {
+  //   // re-renders the component
+  //   this.setState({});
   // };
+
 
 
   changeName(name) {
@@ -59,6 +61,13 @@ export default class StudentList extends Component {
     })
   }
 
+  deleteAll() {
+    this.db.deleteAllStudents()
+    //this.refresh()
+  
+  }
+
+
 
 
   renderItem(item) {
@@ -69,6 +78,7 @@ export default class StudentList extends Component {
       </View>
     </TouchableOpacity>)
   }
+
 
 
   render() {
@@ -100,11 +110,6 @@ export default class StudentList extends Component {
         
         <View style={{ flexDirection: 'row' }}>
         <Text style={styles.head}>List Students</Text>  
-        <TouchableOpacity style={styles.btn}
-          onPress={() =>  this.props.navigation.navigate('AddUser')}
-        >
-        <Text style={styles.btnText}>Add user</Text>
-        </TouchableOpacity>
         </View>
         <View style={styles.container}>
           <FlatList
@@ -114,6 +119,11 @@ export default class StudentList extends Component {
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
+        <TouchableOpacity style={styles.btn}
+          onPress={() =>  this.props.navigation.navigate('AdminLogin')}
+        >
+        <Text style={styles.btnText}>Login as admin</Text>
+        </TouchableOpacity>
       </View>
 
 
@@ -123,46 +133,6 @@ export default class StudentList extends Component {
 }
 
 
-
-
-
-
-
-
-
-
-
-// renderItem(item) {
-//   return (<TouchableOpacity
-//             onPress={() => { this.props.navigation.navigate('SingUser', { name: item.firstName }) }}>
-//             <View style={ styles.item }>
-//               <Text style={ styles.student }>{ item.studentNr } - { item.firstName } - { item.lastName}</Text>
-//             </View>
-//           </TouchableOpacity>)
-// }
-
-
-// render() {
-//   //keyExtractor = item => item.id;
-//   return (
-//     <View style={ styles.container }>
-//       <Text style={ styles.header1 }>List Products</Text>
-//       <View style={ styles.container }>
-//         <FlatList
-//           data={ this.state.students }
-//           renderItem={({ studentNr, firstName, lastName }) =>
-//             <View>
-//                 <Text>{studentNr}</Text>
-//                 <Text>{firstName}</Text>
-//                 <Text>{lastName}</Text>
-//             </View> }
-//           // keyExtractor ={ this._keyExtractor }
-//         />
-//       </View>
-//     </View>
-//   )
-// }
-// }
 
 
 const styles = StyleSheet.create({

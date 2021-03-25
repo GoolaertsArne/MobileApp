@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import {UserDAL} from "../../database/UserDAL";
+import {UserDAL} from "../database/UserDAL";
 
 
 class AddUser extends React.Component {
@@ -20,6 +20,7 @@ class AddUser extends React.Component {
       firstName: "",
       lastName: "",
       studentNr: "",
+      //refresh :"",
     };
     //this.db.insertStudents = this.db.insertStudents.bind(this)
   }
@@ -40,6 +41,7 @@ class AddUser extends React.Component {
     this.db = new UserDAL();
     //this.setState({date: , location: })
   }
+
 
   render() {
     return (
@@ -70,12 +72,16 @@ class AddUser extends React.Component {
         >
           <Text style={styles.styledButtonText}>Add</Text>
         </TouchableOpacity>
-        {/* <Button title="save" onPress={this.save()}></Button>  */}
+        <TouchableOpacity
+          style={styles.styledButton}
+          onPress= {() => this.props.navigation.navigate('ImportList')}
+        >
+          <Text style={styles.styledButtonText}>Import list</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  //redirect werkt niet
   save() {
     console.log(this.state);
     this.db.insertStudents(this.state).then((res) => {

@@ -1,14 +1,15 @@
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useState, Alert } from "react";
+import React, { Component, useState, Alert,Image } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
   Button,
   TouchableOpacity,
 } from "react-native";
+
+
  
 export default class AdminLogin extends Component{
   constructor(props) {
@@ -53,7 +54,8 @@ export default class AdminLogin extends Component{
  render() {
   return (
     <View style={styles.container}>
-      {/* <Image style={styles.image} source={require('../../assets/background.png')} /> */}
+       {/* <Image style={styles.image} source={{uri: "https://www.ap.be/sites/default/files/users/user663/AP_logo_staand_rgb.jpg"}} /> */}
+      <Image source={require('C:\Users\goola\Desktop\school\Schooljaar2\Semester2\iWasThere\iWasThere\assets\background.png')} />
  
       <StatusBar style="auto" />
       <View style={styles.inputView}>
