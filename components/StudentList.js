@@ -143,58 +143,19 @@ export default class StudentList extends Component {
 
 
 
-
-
-
-
-
-
-// renderItem(item) {
-//   return (<TouchableOpacity
-//             onPress={() => { this.props.navigation.navigate('SingUser', { name: item.firstName }) }}>
-//             <View style={ styles.item }>
-//               <Text style={ styles.student }>{ item.studentNr } - { item.firstName } - { item.lastName}</Text>
-//             </View>
-//           </TouchableOpacity>)
-// }
-
-
-// render() {
-//   //keyExtractor = item => item.id;
-//   return (
-//     <View style={ styles.container }>
-//       <Text style={ styles.header1 }>List Products</Text>
-//       <View style={ styles.container }>
-//         <FlatList
-//           data={ this.state.students }
-//           renderItem={({ studentNr, firstName, lastName }) =>
-//             <View>
-//                 <Text>{studentNr}</Text>
-//                 <Text>{firstName}</Text>
-//                 <Text>{lastName}</Text>
-//             </View> }
-//           // keyExtractor ={ this._keyExtractor }
-//         />
-//       </View>
-//     </View>
-//   )
-// }
-// }
-
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
   head: { height: 40, fontSize: 30, marginBottom: 10, marginTop: 10 },
   text: { margin: 6 },
-  row: { flexDirection: 'row', backgroundColor: '#D8E1DD' },
+  row: { flexDirection: 'row', backgroundColor: '#F9EFEF' ,borderRadius: 15, },
   btn: {
     elevation: 8,
     backgroundColor: "#DC143C",
-    borderRadius: 10,
+    borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginBottom: 10,
-    width: 80,
+    width: 120,
    
   },
   btnText: { textAlign: 'center', 

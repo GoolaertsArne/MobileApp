@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+
 import React, { Component, useState, Alert,Image } from "react";
 import {
   StyleSheet,
@@ -18,8 +18,8 @@ export default class AdminLogin extends Component{
     this.state = {
       email: "",
       password: "",
-      adminPassword: "test",
-      adminEmail : "test",
+      adminPassword: "admin",
+      adminEmail : "admin",
       errorMsg: "invalid login"
 
     };
@@ -54,10 +54,9 @@ export default class AdminLogin extends Component{
  render() {
   return (
     <View style={styles.container}>
-       {/* <Image style={styles.image} source={{uri: "https://www.ap.be/sites/default/files/users/user663/AP_logo_staand_rgb.jpg"}} /> */}
-      <Image source={require('C:\Users\goola\Desktop\school\Schooljaar2\Semester2\iWasThere\iWasThere\assets\background.png')} />
+      {/* <Image source={require('../assets/background.png')} /> */}
  
-      <StatusBar style="auto" />
+     
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -130,13 +129,14 @@ const styles = StyleSheet.create({
   },
  
   loginBtn: {
+    elevation: 8,
     width: "80%",
     borderRadius: 25,
     height: 50,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    backgroundColor: "#FF0000",
+    backgroundColor: "#DC143C",
   },
 
   loginText: {

@@ -45,8 +45,8 @@ class AddUser extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Text style = {styles.titleText }> Add a Student </Text>
+      <View style={styles.container}>
+        <Text style = {styles.head }> Add a Student </Text>
         {/*{this.createSignaturePad()} */}
         <TextInput
           style={styles.textInput}
@@ -67,13 +67,13 @@ class AddUser extends React.Component {
           value={this.state.lastName}
         />
         <TouchableOpacity
-          style={styles.styledButton}
+          style={styles.btn}
           onPress= {() => this.save()}
         >
           <Text style={styles.styledButtonText}>Add</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.styledButton}
+          style={styles.btn}
           onPress= {() => this.props.navigation.navigate('ImportList')}
         >
           <Text style={styles.styledButtonText}>Import list</Text>
@@ -96,6 +96,7 @@ class AddUser extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#fff",
     flex: 1,
     flexDirection: "column",
     top: 25,
@@ -109,24 +110,25 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 50,
-    fontSize: 25,
+    fontSize: 15,
     paddingLeft: 20,
     paddingRight: 20,
     marginTop: 20,
+    flexDirection: 'row', backgroundColor: '#F9EFEF' ,borderRadius: 15,
   },
-  styledButton: {
+  btn: {
+    elevation: 8,
     width: "80%",
     borderRadius: 25,
     height: 50,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    backgroundColor: "#FF0000",
+    backgroundColor: "#DC143C",
   },
-  styledButtonText: {
-    color: "#FFFFFF",
-    fontSize: 20,
-    textAlign: "center",
-  },
+  styledButtonText:  {
+    color:"#FFFFFF"
+},
+head: { height: 40, fontSize: 30, marginBottom: 10, marginTop: 10 },
 });
 export default AddUser;

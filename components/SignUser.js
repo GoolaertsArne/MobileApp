@@ -11,7 +11,7 @@ import axios from 'axios';
 //import Rembrandt from 'rembrandt';
 
 
-const compare = require("resemblejs").compare;
+// const compare = require("resemblejs").compare;
 
 class SignUser extends React.Component {
   db = new UserDAL();

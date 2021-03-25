@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { render } from 'react-dom';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import { UserDAL } from "../database/UserDAL";
 
 
@@ -75,10 +75,28 @@ export default class ListImport extends Component {
             onChangeText={text => this.onChangeText(text)}
             value={this.state.stringValue}
           />
-          <Button title="split" onPress={() => this.Split()} />
+          <Button style ={styles.btn} title="split" onPress={() => this.Split()} />
         </View>
       );
     }
 }
+
+const styles = StyleSheet.create({
+  // container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+  // head: {
+  //   height: 40, fontSize: 30, marginBottom: 10, textAlign: 'center',
+  //   alignItems: 'center',
+  // },
+  btn: {
+    elevation: 8,
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    backgroundColor: "#DC143C",
+  },
+});
 
 
